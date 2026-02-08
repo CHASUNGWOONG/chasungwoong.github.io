@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차성웅 님을 소개합니다 - 제미나이</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Gemini 배경 이미지 */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .gemini-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('Gemini_Generated_Image_z4fl4bz4fl4bz4fl.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 0;
+        }
+
+        .background-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                rgba(5, 10, 25, 0.85) 0%, 
+                rgba(10, 15, 35, 0.82) 50%, 
+                rgba(8, 12, 30, 0.88) 100%);
+            z-index: 1;
+        }
+
+        .main-content {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            padding: 3rem 1.5rem 4rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 헤더 */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .header-text {
+            text-align: center;
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .header-image {
+            flex-shrink: 0;
+        }
+
+        .fas-image-wrapper {
+            width: 130px;
+            height: 160px;
+            border-radius: 1.25rem;
+            overflow: hidden;
+            border: 3px solid rgba(147, 51, 234, 0.4);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .fas-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 25%;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(147, 51, 234, 0.5);
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            color: #e0e7ff;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        }
+
+        .title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #c7d2fe;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        }
+
+        /* 소개 카드들 */
+        .intro-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .intro-item {
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 1rem;
+            padding: 1.5rem 1.75rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .intro-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .intro-item:hover {
+            border-color: rgba(147, 51, 234, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(147, 51, 234, 0.15);
+        }
+
+        .intro-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            border-radius: 50%;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.75rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .intro-text {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #f1f5f9;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 푸터 */
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.25);
+            animation: fadeIn 1s ease-out 1s both;
+        }
+
+        .introducer {
+            font-size: 1rem;
+            color: #c7d2fe;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        }
+
+        .introducer span {
+            background: linear-gradient(90deg, #a78bfa, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* 반응형 */
+        @media (max-width: 640px) {
+            .header {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .main-content {
+                padding: 2rem 1rem 3rem;
+            }
+
+            .title {
+                font-size: 1.75rem;
+            }
+
+            .intro-item {
+                padding: 1.25rem 1.5rem;
+            }
+
+            .intro-text {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-container">
+        <div class="gemini-bg-image" aria-hidden="true"></div>
+    </div>
+
+    <main class="main-content">
+        <header class="header">
+            <div class="header-image">
+                <div class="fas-image-wrapper">
+                    <img src="FAS(FATHER AND SON).jpg" alt="아버지와 아들" loading="lazy">
+                </div>
+            </div>
+            <div class="header-text">
+                <div class="badge">AI 소개</div>
+                <h1 class="title">차성웅 님을 소개합니다</h1>
+                <p class="subtitle">제미나이가 전하는 사람의 이야기</p>
+            </div>
+        </header>
+
+        <div class="intro-list">
+            <article class="intro-item">
+                <div class="intro-number">1</div>
+                <p class="intro-text">이 사람은 어머니 김두리 님과 아들 차준수 군을 위해 헌신하며 가족의 안녕을 삶의 최우선 순위로 두는 분입니다.</p>
+            </article>
+            <article class="intro-item">
+                <div class="intro-number">2</div>
+                <p class="intro-text">이 사람은 아들과 함께 스키를 타며 소중한 추억을 쌓고 학교 생활까지 세심하게 챙기는 다정하고 책임감 있는 아버지입니다.</p>
+            </article>
+            <article class="intro-item">
+                <div class="intro-number">3</div>
+                <p class="intro-text">이 사람은 000 연봉의 고소득자로서 철저한 연말정산과 세무 계획을 통해 자신의 경제적 권리를 빈틈없이 관리하는 분입니다.</p>
+            </article>
+            <article class="intro-item">
+                <div class="intro-number">4</div>
+                <p class="intro-text">이 사람은 반도체 산업의 기술력과 글로벌 거시 경제의 흐름을 꿰뚫어 보는 탁월한 통찰력을 가진 전략가입니다.</p>
+            </article>
+            <article class="intro-item">
+                <div class="intro-number">5</div>
+                <p class="intro-text">이 사람은 금, 배당주, 현금 비중을 정교하게 조절하여 수억 원대의 자산 포트폴리오를 직접 운영하는 냉철한 투자자입니다.</p>
+            </article>
+            <article class="intro-item">
+                <div class="intro-number">6</div>
+                <p class="intro-text">이 사람은 테슬라 모델 Y 프리미엄을 선택할 정도로 혁신적인 기술 가치와 실용성을 동시에 추구하는 스마트한 소비자입니다.</p>
+            </article>
+            <article class="intro-item">
+                <div class="intro-number">7</div>
+                <p class="intro-text">이 사람은 구글 드라이브와 캘린더를 활용해 금융 리포트부터 사소한 집안일까지 체계적으로 관리하는 완벽주의자입니다.</p>
+            </article>
+            <article class="intro-item">
+                <div class="intro-number">8</div>
+                <p class="intro-text">이 사람은 성공적인 투자 경험을 바탕으로 자신만의 확고한 원칙을 지키며 시장의 변화에 흔들리지 않는 주관을 가졌습니다.</p>
+            </article>
+            <article class="intro-item">
+                <div class="intro-number">9</div>
+                <p class="intro-text">이 사람은 AI를 단순한 도구가 아닌 전문적인 파트너로 활용하며 최선의 의사결정을 위해 끊임없이 분석하고 질문하는 분입니다.</p>
+            </article>
+            <article class="intro-item">
+                <div class="intro-number">10</div>
+                <p class="intro-text">이 사람은 본인의 취향이 명확하여 불필요한 정보에는 단호하며, 자신이 지향하는 목표를 향해 정교하게 움직이는 실행가입니다.</p>
+            </article>
+        </div>
+
+        <footer class="footer">
+            <p class="introducer">소개자 <span>제미나이</span></p>
+        </footer>
+    </main>
+
+    <script>
+        // 스크롤 시 소개 항목 순차 등장 애니메이션
+        const introItems = document.querySelectorAll('.intro-item');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 80);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        introItems.forEach(item => observer.observe(item));
+
+        // 페이지 로드 시 첫 번째 요소들 즉시 표시
+        window.addEventListener('load', () => {
+            const firstItems = Array.from(introItems).slice(0, 3);
+            firstItems.forEach((item, index) => {
+                setTimeout(() => item.classList.add('visible'), 300 + index * 80);
+            });
+        });
+    </script>
+</body>
+</html>
